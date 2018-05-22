@@ -6,7 +6,11 @@
 # Pull base image.
 FROM nginx:1.12
 
-RUN apt-get update && apt install -y procps
+RUN apt-get update && apt install -y \
+	procps \
+	iputils-ping;
+
+
 ADD nginx.conf /etc/nginx/
 ADD /entrypoint.sh /entrypoint.sh
 
