@@ -2,7 +2,7 @@
 
 CONF_PATH=/etc/nginx/sites-enabled
 ARCHIVE_PATH=/etc/nginx/.sites/
-mkdir ${ARCHIVE_PATH}
+mkdir -p ${ARCHIVE_PATH} || true
 
 pid=$$
 nginx -T >/proc/$pid/fd/1 &
