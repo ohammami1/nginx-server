@@ -8,7 +8,7 @@ pid=$$
 nginx -T >/proc/$pid/fd/1 &
 sum=$(tar -cf - . | md5sum | cut -d' ' -f 1)
 cd $CONF_PATH
-cp $CONF_PATH/* $ARCHIVE_PATH/
+cp $CONF_PATH/* $ARCHIVE_PATH/ || true
 
 while true; do
 	for cfile in $(ls ${CONF_PATH}/); do
@@ -58,7 +58,7 @@ while true; do
 			echo "One file changed: $cfile"
 			echo "Reloading Server.."
 			rm -rf ${ARCHIVE_PATH}/*
-			cp ${CONF_PATH}/* ${ARCHIVE_PATH}
+			cp ${CONF_PATH}/* ${ARCHIVE_PATH} || true
 			if pgrep nginx >/dev/null 2>&1; then
     				nginx -s reload
    	 		else
