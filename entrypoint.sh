@@ -2,19 +2,15 @@
 
 CONF_PATH=/etc/nginx/sites-enabled
 ARCHIVE_PATH=/etc/nginx/.sites
-mkdir ${ARCHIVE_PATH}
+mkdir -p ${ARCHIVE_PATH} || true
 
 pid=$$
 sum=$(tar -cf - . | md5sum | cut -d' ' -f 1)
 cd $CONF_PATH
 cp $CONF_PATH/* $ARCHIVE_PATH/
-#mv $CONF_PATH/* $ARCHIVE_PATH/ || true
 
 nginx -T >/proc/$pid/fd/1 2>&1 
 nginx >/proc/$pid/fd/1 2>&1 &
-#sleep 2
-#cp $ARCHIVE_PATH/* $CONF_PATH/
-#pkill nginx || true && nginx -T > /proc/$pid/fd/1 2>&1 &
 
 while true; do
 	for cfile in $(ls ${CONF_PATH}/); do
@@ -73,11 +69,6 @@ while true; do
 			echo "Reloading Server.."
 			rm -rf ${ARCHIVE_PATH}/*
 			cp ${CONF_PATH}/* ${ARCHIVE_PATH}
-#			if pgrep nginx >/dev/null 2>&1; then
-#				nginx -s reload >/proc/$pid/fd/1 &
-#   	 		else
-#				nginx > /proc/$pid/fd/1 &
-#			fi
 
 		       	nginx -T > /proc/$pid/fd/1 2>&1 
 			nginx -s reload
