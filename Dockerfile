@@ -6,8 +6,9 @@
 # Pull base image.
 FROM nginx:1.12
 
-RUN apt-get update && apt install -y \
+RUN apt-get update && apt-get install -y \
 	procps \
+	netcat-traditional \
 	iputils-ping;
 
 
